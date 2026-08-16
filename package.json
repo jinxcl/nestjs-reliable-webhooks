@@ -8,7 +8,9 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "prepack": "npm run build",
-    "prepublishOnly": "npm run typecheck && npm test"
+    "prepublishOnly": "npm run typecheck && npm test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
   "devDependencies": {
     "@types/node": "^26.2.0",
     "@vitest/coverage-v8": "^4.1.10",
+    "prettier": "^3.9.6",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   },

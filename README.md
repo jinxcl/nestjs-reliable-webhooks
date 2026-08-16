@@ -11,6 +11,9 @@ Typed webhook delivery utilities for NestJS with HMAC signing and extensible tra
 - Deterministic timestamps for testing
 - TypeScript declarations
 - Unit tests
+- HMAC-SHA256 signature verification
+- Configurable timestamp tolerance to prevent replay attacks
+- Timing-safe signature comparison
 
 ## Example
 
@@ -31,6 +34,22 @@ The generated signature uses this format:
 t=<timestamp>,v1=<hmac-sha256>
 ```
 
+## Verify a signature
+
+```ts
+import { verifyWebhookSignature } from 'nestjs-reliable-webhooks';
+
+const isValid = verifyWebhookSignature({
+  payload,
+  secret: process.env.WEBHOOK_SECRET!,
+  signature,
+  toleranceInSeconds: 300,
+});
+
+if (!isValid) {
+  throw new Error('Invalid webhook signature');
+}
+
 ## Requirements
 
 - Node.js 20 or newer
@@ -39,7 +58,6 @@ t=<timestamp>,v1=<hmac-sha256>
 
 ## Roadmap
 
-- Signature verification
 - Configurable NestJS module
 - HTTP webhook transport
 - Typed webhook client
@@ -48,3 +66,4 @@ t=<timestamp>,v1=<hmac-sha256>
 ## License
 
 MIT
+```

@@ -24,4 +24,14 @@ describe('createWebhookSignature', () => {
       }),
     ).toThrow('Webhook secret must not be empty');
   });
+
+  it('rejects an invalid timestamp', () => {
+    expect(() =>
+      createWebhookSignature({
+        payload: '{}',
+        secret: 'whsec_test',
+        timestamp: -1,
+      }),
+    ).toThrow('Webhook timestamp must be a positive integer');
+  });
 });
