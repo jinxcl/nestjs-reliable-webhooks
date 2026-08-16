@@ -1,0 +1,4 @@
+export const WEBHOOK_MODULE_OPTIONS = Symbol('WEBHOOK_MODULE_OPTIONS');
+
+export const DEFAULT_SIGNATURE_HEADER = 'x-webhook-signature';
+export const DEFAULT_TIMEOUT_IN_MILLISECONDS = 10_000;
