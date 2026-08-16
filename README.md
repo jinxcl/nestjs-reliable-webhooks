@@ -14,6 +14,52 @@ Typed webhook delivery utilities for NestJS with HMAC signing and extensible tra
 - HMAC-SHA256 signature verification
 - Configurable timestamp tolerance to limit replay windows
 - Timing-safe signature comparison
+- Configurable NestJS module
+- Synchronous and asynchronous module registration
+- Validated signature header and HTTP timeout options
+
+## Register the module
+
+### Synchronous configuration
+
+```ts
+import { Module } from '@nestjs/common';
+import { WebhookModule } from 'nestjs-reliable-webhooks';
+
+@Module({
+  imports: [
+    WebhookModule.forRoot({
+      secret: process.env.WEBHOOK_SECRET!,
+      signatureHeader: 'x-webhook-signature',
+      timeoutInMilliseconds: 10_000,
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+### Asynchronous configuration
+
+```ts
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { WebhookModule } from 'nestjs-reliable-webhooks';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot(),
+    WebhookModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.getOrThrow<string>('WEBHOOK_SECRET'),
+        timeoutInMilliseconds: 10_000,
+      }),
+    }),
+  ],
+})
+export class AppModule {}
+```
 
 ## Example
 
@@ -63,6 +109,7 @@ if (!isValid) {
 - HTTP webhook transport
 - Typed webhook client
 - Testing utilities
+- Configurable NestJS module
 
 ## License
 
