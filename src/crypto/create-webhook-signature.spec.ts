@@ -32,6 +32,6 @@ describe('createWebhookSignature', () => {
         secret: 'whsec_test',
         timestamp: -1,
       }),
-    ).toThrow('Webhook timestamp must be a positive integer');
+    ).toThrow('Webhook timestamp must be a non-negative safe integer');
   });
 });
