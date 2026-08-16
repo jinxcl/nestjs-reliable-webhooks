@@ -1,0 +1,54 @@
+{
+  "name": "nestjs-reliable-webhooks",
+  "version": "0.1.0",
+  "description": "Typed webhook delivery for NestJS with HMAC signing and extensible transports.",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run typecheck && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jinxcl/nestjs-reliable-webhooks.git"
+  },
+  "keywords": [
+    "nestjs",
+    "webhooks",
+    "typescript",
+    "hmac",
+    "webhook-delivery"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jinxcl/nestjs-reliable-webhooks/issues"
+  },
+  "homepage": "https://github.com/jinxcl/nestjs-reliable-webhooks#readme",
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@vitest/coverage-v8": "^4.1.10",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.8.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false
+}
