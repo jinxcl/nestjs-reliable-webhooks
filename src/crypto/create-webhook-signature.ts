@@ -15,8 +15,8 @@ export function createWebhookSignature({
     throw new Error('Webhook secret must not be empty');
   }
 
-  if (!Number.isInteger(timestamp) || timestamp < 0) {
-    throw new Error('Webhook timestamp must be a positive integer');
+  if (!Number.isSafeInteger(timestamp) || timestamp < 0) {
+    throw new Error('Webhook timestamp must be a non-negative safe integer');
   }
 
   const signedPayload = `${timestamp}.${payload}`;
