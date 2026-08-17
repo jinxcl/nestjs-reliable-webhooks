@@ -1,4 +1,6 @@
 export type { SendWebhookInput } from './contracts/send-webhook.input';
+export type { WebhookDeliveryResult } from './contracts/webhook-delivery-result';
+export { WebhookClient } from './client/webhook.client';
 export {
   createWebhookSignature,
   type CreateWebhookSignatureOptions,

@@ -1,11 +1,21 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import type { DynamicModule, FactoryProvider } from '@nestjs/common';
 
+import { WebhookClient } from '../client/webhook.client';
 import { resolveWebhookModuleOptions } from './resolve-webhook-module-options';
 import { WEBHOOK_MODULE_OPTIONS } from './webhook.constants';
-import {
+import type {
+  ResolvedWebhookModuleOptions,
   WebhookModuleAsyncOptions,
   WebhookModuleOptions,
 } from './webhook-module-options';
+
+const webhookClientProvider: FactoryProvider<WebhookClient> = {
+  provide: WebhookClient,
+  inject: [WEBHOOK_MODULE_OPTIONS],
+  useFactory: (options: ResolvedWebhookModuleOptions): WebhookClient =>
+    new WebhookClient(options),
+};
 
 @Module({})
 export class WebhookModule {
@@ -19,8 +29,9 @@ export class WebhookModule {
           provide: WEBHOOK_MODULE_OPTIONS,
           useValue: resolvedOptions,
         },
+        webhookClientProvider,
       ],
-      exports: [WEBHOOK_MODULE_OPTIONS],
+      exports: [WEBHOOK_MODULE_OPTIONS, WebhookClient],
     };
   }
 
@@ -38,8 +49,9 @@ export class WebhookModule {
             return resolveWebhookModuleOptions(moduleOptions);
           },
         },
+        webhookClientProvider,
       ],
-      exports: [WEBHOOK_MODULE_OPTIONS],
+      exports: [WEBHOOK_MODULE_OPTIONS, WebhookClient],
     };
   }
 }

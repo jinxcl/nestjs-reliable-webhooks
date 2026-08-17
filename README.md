@@ -17,6 +17,11 @@ Typed webhook delivery utilities for NestJS with HMAC signing and extensible tra
 - Configurable NestJS module
 - Synchronous and asynchronous module registration
 - Validated signature header and HTTP timeout options
+- Injectable HTTP webhook client
+- Signed JSON `POST` delivery using native `fetch`
+- Global or delivery-specific signing secrets
+- Custom HTTP headers and configurable timeouts
+- Structured delivery results for successful and failed responses
 
 ## Register the module
 
@@ -61,7 +66,40 @@ import { WebhookModule } from 'nestjs-reliable-webhooks';
 export class AppModule {}
 ```
 
-## Example
+## Send a webhook
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { WebhookClient } from 'nestjs-reliable-webhooks';
+
+@Injectable()
+export class OrderWebhookService {
+  constructor(private readonly webhookClient: WebhookClient) {}
+
+  async sendOrderCreated(orderId: string): Promise<void> {
+    const result = await this.webhookClient.send({
+      url: 'https://customer.example.com/webhooks',
+      event: 'order.created',
+      payload: {
+        orderId,
+      },
+      headers: {
+        'x-api-key': 'customer-api-key',
+      },
+    });
+
+    if (!result.ok) {
+      throw new Error(
+        `Webhook delivery failed with status ${result.statusCode}`,
+      );
+    }
+  }
+}
+```
+
+The free client performs one immediate delivery attempt. Applications remain responsible for deciding how to handle network errors and unsuccessful HTTP responses.
+
+## Create a signature
 
 ```ts
 import { createWebhookSignature } from 'nestjs-reliable-webhooks';
@@ -105,9 +143,6 @@ if (!isValid) {
 
 ## Roadmap
 
-- Configurable NestJS module
-- HTTP webhook transport
-- Typed webhook client
 - Testing utilities
 - Configurable NestJS module
 
