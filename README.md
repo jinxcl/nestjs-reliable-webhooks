@@ -1,8 +1,12 @@
 # NestJS Reliable Webhooks
 
-Typed webhook delivery utilities for NestJS with HMAC signing and extensible transports.
+Reliable, typed HTTP webhook delivery for NestJS with HMAC-SHA256 signing and verification.
 
-> This project is currently under active development and is not yet published to npm.
+## Installation
+
+```bash
+npm install nestjs-reliable-webhooks
+```
 
 ## Current features
 
@@ -99,6 +103,8 @@ export class OrderWebhookService {
 
 The free client performs one immediate delivery attempt. Applications remain responsible for deciding how to handle network errors and unsuccessful HTTP responses.
 
+The free version does not include persistence, automatic retries, delivery history, replay tools, metrics, or a management dashboard.
+
 ## Create a signature
 
 ```ts
@@ -117,6 +123,8 @@ The generated signature uses this format:
 ```text
 t=<timestamp>,v1=<hmac-sha256>
 ```
+
+Signatures are calculated from the exact serialized request body. Receivers must verify the signature using the raw body before parsing or modifying the JSON payload.
 
 ## Verify a signature
 
@@ -144,7 +152,7 @@ if (!isValid) {
 ## Roadmap
 
 - Testing utilities
-- Configurable NestJS module
+- Additional integration examples
 
 ## License
 
