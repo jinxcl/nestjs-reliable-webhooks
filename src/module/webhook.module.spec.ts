@@ -10,6 +10,7 @@ import type {
   WebhookModuleOptions,
 } from './webhook-module-options';
 import { WebhookModule } from './webhook.module';
+import { WebhookClient } from '../client/webhook.client';
 
 class TestConfigService {
   getSecret(): string {
@@ -44,6 +45,8 @@ describe('WebhookModule', () => {
       signatureHeader: 'x-custom-signature',
       timeoutInMilliseconds: 5_000,
     });
+
+    expect(testingModule.get(WebhookClient)).toBeInstanceOf(WebhookClient);
 
     await testingModule.close();
   });
