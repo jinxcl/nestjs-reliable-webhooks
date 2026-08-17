@@ -22,3 +22,6 @@ npm-debug.log*
 # Operating systems
 .DS_Store
 Thumbs.db
+
+# npm package archives
+*.tgz
